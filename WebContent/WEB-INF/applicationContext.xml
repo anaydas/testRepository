@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/mvc 
+			http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+			http://www.springframework.org/schema/tx  
+			http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+			
+			
+			
+<context:annotation-config/>
+<context:component-scan base-package="com.mindtree.*"/>
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
+<bean
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="location" value="classpath:data.properties"></property>
+</bean>
+			
+<bean id="dataSource"
+	class="org.apache.commons.dbcp.BasicDataSource">
+	<property name="jdbc.driverClassName" value="${jdbc.driverClassName}"></property>
+	<property name="jdbc.url" value="${jdbc.url}"></property>
+	<property name="jdbc.username" value="${jdbc.username}"></property>
+	<property name="jdbc.password" value="${jdbc.password}"></property>
+</bean>			
+
+<!-- <bean id="sessionFactory"
+	class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+ 	<property name="dataSource" ref="dataSource"></property>
+ 	<property name="annotatedClasses">
+ 		<list>
+ 			<value></value>
+ 		</list>
+ 	</property>
+ 	<property name="hibernateProperties">
+ 		<props>
+ 			<prop key="hibernate.dialect">org.apache.dialect.MySQLDialect</prop>
+ 			<prop key="hibernate.show_sql">true</prop>
+ 			<prop key="hibernate.format_sql">true</prop>
+ 			<prop key="hibernate.hbm2ddl.auto">update</prop>
+ 		</props>
+ 	</property>
+</bean>
+ -->
+<bean id="transactionManager"
+	class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<property name="dataSource" ref="dataSource"></property>
+	<property name="sessionFactory" ref="sessionFactory"></property>
+</bean>
+
+<bean id="hibernateTemplate"
+	class="org.springframework.orm.hibernate3.HibernateTemplate">
+	<constructor-arg ref="sessionFactory"/>
+</bean>
+
+<!-- <context:annotation-config/>
+
+<context:component-scan base-package="com.mindtree.*"/>
+
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
+<bean
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="location" value="classpath:data.properties"></property>
+</bean>		
+
+Database Data Source Configuration
+<bean id="dataSource"
+	class="org.apache.commons.dbcp.BasicDataSource">
+	<property name="driverClassname" value="${jdbc.driverClassName}"/>
+	<property name="url" value="${jdbc.url}"/>
+	<property name="username" value="${jdbc.username}"/>
+	<property name="password" value="${jdbc.password}"/>
+</bean>
+
+Session Factory For Hibernate		
+<bean id="sessionFactory"
+	class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+	<property name="annotatedClasses">
+		<list>
+			<value></value>
+			<value></value>
+		</list>
+	</property>
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.format_sql">true</prop>
+			<prop key="hibernate.hbm2ddl.auto">update</prop>
+		</props>
+	</property>
+</bean>		
+
+Hibernate Transaction Manager Configuration
+<bean id="transactionManager"
+	class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<property name="sessionFactory" ref="sessionFactory"/>
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+
+Hibernate Template
+<bean id="hibernateTemplate"
+	class="org.springframework.orm.hibernate3.HibernateTemplate">
+	<constructor-arg ref="sessionFactory"/>
+</bean> -->
+
+</beans>
